@@ -1,3 +1,7 @@
+terraform {
+  required_version = ">= 0.13.0"
+}
+
 locals {
   is_windows      = dirname("/") == "\\"
   command_windows = var.command_windows != null ? var.command_windows : var.command_unix
@@ -16,7 +20,7 @@ module "asset_command_provided" {
 
 module "command_exists" {
   source          = "Invicton-Labs/shell-data/external"
-  version         = "0.1.4"
+  version         = "0.1.5"
   command_unix    = "command -v \"$COMMAND\" >/dev/null 2>&1; echo $?"
   command_windows = "[bool](Get-Command -Name \"$Env:COMMAND\" -ErrorAction SilentlyContinue)"
   working_dir     = var.working_dir != null ? var.working_dir : path.module
