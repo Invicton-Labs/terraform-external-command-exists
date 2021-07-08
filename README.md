@@ -8,7 +8,8 @@ Usage:
 module "command_exists" {
   source       = "Invicton-Labs/command-exists/external"
   command_unix = "git"
-  // This is technically not required because if only `command_unix` or `command_windows` is specified, it will be used on both operating system types
+  // This is technically not required because if only `command_unix` or `command_windows` is specified,
+  // it will be used on both operating system types
   command_windows = "git"
   // Specify the working directory if the command is not installed system-wide
   working_dir = path.root
