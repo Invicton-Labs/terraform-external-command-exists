@@ -13,14 +13,14 @@ locals {
 // Ensure that at least one command is provided
 module "asset_command_provided" {
   source        = "Invicton-Labs/assertion/null"
-  version       = "0.1.1"
+  version       = "0.2.1"
   error_message = "At least one of the `command_unix` or `command_windows` input variable must be provided."
   condition     = var.command_unix != null || var.command_windows != null
 }
 
 module "command_exists" {
   source          = "Invicton-Labs/shell-data/external"
-  version         = "0.1.5"
+  version         = "0.2.0"
   command_unix    = "command -v \"$COMMAND\" >/dev/null 2>&1; echo $?"
   command_windows = "[bool](Get-Command -Name \"$Env:COMMAND\" -ErrorAction SilentlyContinue)"
   working_dir     = var.working_dir != null ? var.working_dir : path.module
@@ -33,7 +33,7 @@ module "command_exists" {
 // Ensure that the command exists, in order to fail Terraform if desired
 module "asset_command_exists" {
   source        = "Invicton-Labs/assertion/null"
-  version       = "0.1.1"
+  version       = "0.2.1"
   error_message = "The command \"${local.command}\" is not available in ${local.is_windows ? "PowerShell" : "the shell"}."
   // Only check the condition if we should fail if it's missing
   condition = var.fail_if_command_missing ? local.exists : true
