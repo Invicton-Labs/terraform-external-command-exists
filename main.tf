@@ -7,11 +7,12 @@ locals {
   command_windows = var.command_windows != null ? var.command_windows : var.command_unix
   command_unix    = var.command_unix != null ? var.command_unix : var.command_windows
   command         = local.is_windows ? local.command_windows : local.command_unix
-  exists          = local.is_windows ? tobool(lower(module.command_exists.stdout)) : module.command_exists.stdout == "0"
+  stdout          = module.command_exists.stdout != "" ? module.command_exists.stdout : (local.is_windows ? "True" : "0")
+  exists          = module.command_exists.stdout != "" ? local.is_windows ? tobool(lower(module.command_exists.stdout)) : module.command_exists.stdout == "0" : null
 }
 
 // Ensure that at least one command is provided
-module "asset_command_provided" {
+module "assert_command_provided" {
   source        = "Invicton-Labs/assertion/null"
   version       = "0.2.1"
   error_message = "At least one of the `command_unix` or `command_windows` input variable must be provided."
@@ -36,5 +37,5 @@ module "asset_command_exists" {
   version       = "0.2.1"
   error_message = "The command \"${local.command}\" is not available in ${local.is_windows ? "PowerShell" : "the shell"}."
   // Only check the condition if we should fail if it's missing
-  condition = var.fail_if_command_missing ? local.exists : true
+  condition = var.fail_if_command_missing ? (local.exists == null ? true : local.exists) : true
 }
