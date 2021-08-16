@@ -1,5 +1,5 @@
 # Command Exists
-Determines whether a given command is available on the CLI (Linux shell or Windows PowerShell).
+Determines whether a given command is available on the CLI (Linux shell or Windows PowerShell). During a `terraform import`, it will return `null` (since the external data source isn't run during an import).
 
 Usage:
 
