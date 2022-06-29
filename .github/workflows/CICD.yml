@@ -12,6 +12,8 @@ jobs:
         uses: Invicton-Labs/terraform-module-testing-configuration/matrix@main
         with:
           minimum_tf_version: '0.13.0'
+          # An internal module (Invicton-Labs/shell-data/external) doesn't support these versions
+          excluded_tf_versions: '0.15.0,0.15.1,0.15.2,0.15.3'
 
       - name: Output Matrix
         run: |
